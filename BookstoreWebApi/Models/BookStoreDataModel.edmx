@@ -1,0 +1,495 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Adres">
+          <Key>
+            <PropertyRef Name="adresNo" />
+          </Key>
+          <Property Name="adresNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="musteriNo" Type="int" Nullable="false" />
+          <Property Name="il" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="ilce" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="sokak" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="mahalle" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="no" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="exceptionlog">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="timestamp" Type="datetime" Nullable="false" />
+          <Property Name="level" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="logger" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="message" Type="varchar" MaxLength="3600" Nullable="false" />
+          <Property Name="userid" Type="int" />
+          <Property Name="exception" Type="varchar" MaxLength="3600" />
+          <Property Name="stacktrace" Type="varchar" MaxLength="3600" />
+        </EntityType>
+        <EntityType Name="Kitap">
+          <Key>
+            <PropertyRef Name="kitapNo" />
+          </Key>
+          <Property Name="kitapNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="yazarNo" Type="int" Nullable="false" />
+          <Property Name="baslik" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="sayfaSayisi" Type="int" />
+          <Property Name="basimTarihi" Type="varchar" MaxLength="25" />
+          <Property Name="tur" Type="varchar" MaxLength="25" />
+          <Property Name="fiyat" Type="float" />
+          <Property Name="stokSayisi" Type="int" />
+          <Property Name="gorselURL" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Musteri">
+          <Key>
+            <PropertyRef Name="musteriNo" />
+          </Key>
+          <Property Name="musteriNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="musteriAd" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="musteriSoyad" Type="varchar" MaxLength="50" />
+          <Property Name="musteriSifre" Type="char" MaxLength="64" />
+          <Property Name="rol" Type="varchar" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="Siparis">
+          <Key>
+            <PropertyRef Name="siparisNo" />
+          </Key>
+          <Property Name="siparisNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="siparisVeren" Type="int" Nullable="false" />
+          <Property Name="teslimatAdresi" Type="int" Nullable="false" />
+          <Property Name="siparisTarihi" Type="datetime" Nullable="false" />
+          <Property Name="siparisTutari" Type="float" />
+        </EntityType>
+        <EntityType Name="SiparisIcerigi">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="siparisNo" Type="int" Nullable="false" />
+          <Property Name="kitapNo" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Yazar">
+          <Key>
+            <PropertyRef Name="yazarNo" />
+          </Key>
+          <Property Name="yazarNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="yazarAdi" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_kitapNo">
+          <End Role="Kitap" Type="Self.Kitap" Multiplicity="1" />
+          <End Role="SiparisIcerigi" Type="Self.SiparisIcerigi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kitap">
+              <PropertyRef Name="kitapNo" />
+            </Principal>
+            <Dependent Role="SiparisIcerigi">
+              <PropertyRef Name="kitapNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_musteriNo">
+          <End Role="Musteri" Type="Self.Musteri" Multiplicity="1" />
+          <End Role="Adres" Type="Self.Adres" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Musteri">
+              <PropertyRef Name="musteriNo" />
+            </Principal>
+            <Dependent Role="Adres">
+              <PropertyRef Name="musteriNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_siparisNo">
+          <End Role="Siparis" Type="Self.Siparis" Multiplicity="1" />
+          <End Role="SiparisIcerigi" Type="Self.SiparisIcerigi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Siparis">
+              <PropertyRef Name="siparisNo" />
+            </Principal>
+            <Dependent Role="SiparisIcerigi">
+              <PropertyRef Name="siparisNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_siparisVeren">
+          <End Role="Musteri" Type="Self.Musteri" Multiplicity="1" />
+          <End Role="Siparis" Type="Self.Siparis" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Musteri">
+              <PropertyRef Name="musteriNo" />
+            </Principal>
+            <Dependent Role="Siparis">
+              <PropertyRef Name="siparisVeren" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_teslimatAdresi">
+          <End Role="Adres" Type="Self.Adres" Multiplicity="1" />
+          <End Role="Siparis" Type="Self.Siparis" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Adres">
+              <PropertyRef Name="adresNo" />
+            </Principal>
+            <Dependent Role="Siparis">
+              <PropertyRef Name="teslimatAdresi" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_yazarNo">
+          <End Role="Yazar" Type="Self.Yazar" Multiplicity="1" />
+          <End Role="Kitap" Type="Self.Kitap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Yazar">
+              <PropertyRef Name="yazarNo" />
+            </Principal>
+            <Dependent Role="Kitap">
+              <PropertyRef Name="yazarNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelsStoreContainer">
+          <EntitySet Name="Adres" EntityType="Self.Adres" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="exceptionlog" EntityType="Self.exceptionlog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Kitap" EntityType="Self.Kitap" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Musteri" EntityType="Self.Musteri" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Siparis" EntityType="Self.Siparis" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SiparisIcerigi" EntityType="Self.SiparisIcerigi" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Yazar" EntityType="Self.Yazar" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_kitapNo" Association="Self.FK_kitapNo">
+            <End Role="Kitap" EntitySet="Kitap" />
+            <End Role="SiparisIcerigi" EntitySet="SiparisIcerigi" />
+          </AssociationSet>
+          <AssociationSet Name="FK_musteriNo" Association="Self.FK_musteriNo">
+            <End Role="Musteri" EntitySet="Musteri" />
+            <End Role="Adres" EntitySet="Adres" />
+          </AssociationSet>
+          <AssociationSet Name="FK_siparisNo" Association="Self.FK_siparisNo">
+            <End Role="Siparis" EntitySet="Siparis" />
+            <End Role="SiparisIcerigi" EntitySet="SiparisIcerigi" />
+          </AssociationSet>
+          <AssociationSet Name="FK_siparisVeren" Association="Self.FK_siparisVeren">
+            <End Role="Musteri" EntitySet="Musteri" />
+            <End Role="Siparis" EntitySet="Siparis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_teslimatAdresi" Association="Self.FK_teslimatAdresi">
+            <End Role="Adres" EntitySet="Adres" />
+            <End Role="Siparis" EntitySet="Siparis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_yazarNo" Association="Self.FK_yazarNo">
+            <End Role="Yazar" EntitySet="Yazar" />
+            <End Role="Kitap" EntitySet="Kitap" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Models" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Adres">
+          <Key>
+            <PropertyRef Name="adresNo" />
+          </Key>
+          <Property Name="adresNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="musteriNo" Type="Int32" Nullable="false" />
+          <Property Name="il" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ilce" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="sokak" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="mahalle" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="no" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Musteri" Relationship="Self.FK_musteriNo" FromRole="Adres" ToRole="Musteri" />
+          <NavigationProperty Name="Siparis" Relationship="Self.FK_teslimatAdresi" FromRole="Adres" ToRole="Siparis" />
+        </EntityType>
+        <EntityType Name="exceptionlog">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="level" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="logger" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="message" Type="String" MaxLength="3600" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="userid" Type="Int32" />
+          <Property Name="exception" Type="String" MaxLength="3600" FixedLength="false" Unicode="false" />
+          <Property Name="stacktrace" Type="String" MaxLength="3600" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Kitap">
+          <Key>
+            <PropertyRef Name="kitapNo" />
+          </Key>
+          <Property Name="kitapNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="yazarNo" Type="Int32" Nullable="false" />
+          <Property Name="baslik" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="sayfaSayisi" Type="Int32" />
+          <Property Name="basimTarihi" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="tur" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="fiyat" Type="Double" />
+          <Property Name="stokSayisi" Type="Int32" />
+          <NavigationProperty Name="SiparisIcerigi" Relationship="Self.FK_kitapNo" FromRole="Kitap" ToRole="SiparisIcerigi" />
+          <NavigationProperty Name="Yazar" Relationship="Self.FK_yazarNo" FromRole="Kitap" ToRole="Yazar" />
+          <Property Name="gorselURL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Musteri">
+          <Key>
+            <PropertyRef Name="musteriNo" />
+          </Key>
+          <Property Name="musteriNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="musteriAd" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="musteriSoyad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="musteriSifre" Type="String" MaxLength="64" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Adres" Relationship="Self.FK_musteriNo" FromRole="Musteri" ToRole="Adres" />
+          <NavigationProperty Name="Siparis" Relationship="Self.FK_siparisVeren" FromRole="Musteri" ToRole="Siparis" />
+          <Property Name="rol" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Siparis">
+          <Key>
+            <PropertyRef Name="siparisNo" />
+          </Key>
+          <Property Name="siparisNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="siparisVeren" Type="Int32" Nullable="false" />
+          <Property Name="teslimatAdresi" Type="Int32" Nullable="false" />
+          <Property Name="siparisTarihi" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Adres" Relationship="Self.FK_teslimatAdresi" FromRole="Siparis" ToRole="Adres" />
+          <NavigationProperty Name="Musteri" Relationship="Self.FK_siparisVeren" FromRole="Siparis" ToRole="Musteri" />
+          <NavigationProperty Name="SiparisIcerigi" Relationship="Self.FK_siparisNo" FromRole="Siparis" ToRole="SiparisIcerigi" />
+          <Property Name="siparisTutari" Type="Double" />
+        </EntityType>
+        <EntityType Name="SiparisIcerigi">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="siparisNo" Type="Int32" Nullable="false" />
+          <Property Name="kitapNo" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Kitap" Relationship="Self.FK_kitapNo" FromRole="SiparisIcerigi" ToRole="Kitap" />
+          <NavigationProperty Name="Siparis" Relationship="Self.FK_siparisNo" FromRole="SiparisIcerigi" ToRole="Siparis" />
+        </EntityType>
+        <EntityType Name="Yazar">
+          <Key>
+            <PropertyRef Name="yazarNo" />
+          </Key>
+          <Property Name="yazarNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="yazarAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Kitap" Relationship="Self.FK_yazarNo" FromRole="Yazar" ToRole="Kitap" />
+        </EntityType>
+        <Association Name="FK_musteriNo">
+          <End Role="Musteri" Type="Self.Musteri" Multiplicity="1" />
+          <End Role="Adres" Type="Self.Adres" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Musteri">
+              <PropertyRef Name="musteriNo" />
+            </Principal>
+            <Dependent Role="Adres">
+              <PropertyRef Name="musteriNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_teslimatAdresi">
+          <End Role="Adres" Type="Self.Adres" Multiplicity="1" />
+          <End Role="Siparis" Type="Self.Siparis" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Adres">
+              <PropertyRef Name="adresNo" />
+            </Principal>
+            <Dependent Role="Siparis">
+              <PropertyRef Name="teslimatAdresi" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_kitapNo">
+          <End Role="Kitap" Type="Self.Kitap" Multiplicity="1" />
+          <End Role="SiparisIcerigi" Type="Self.SiparisIcerigi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kitap">
+              <PropertyRef Name="kitapNo" />
+            </Principal>
+            <Dependent Role="SiparisIcerigi">
+              <PropertyRef Name="kitapNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_yazarNo">
+          <End Role="Yazar" Type="Self.Yazar" Multiplicity="1" />
+          <End Role="Kitap" Type="Self.Kitap" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Yazar">
+              <PropertyRef Name="yazarNo" />
+            </Principal>
+            <Dependent Role="Kitap">
+              <PropertyRef Name="yazarNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_siparisVeren">
+          <End Role="Musteri" Type="Self.Musteri" Multiplicity="1" />
+          <End Role="Siparis" Type="Self.Siparis" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Musteri">
+              <PropertyRef Name="musteriNo" />
+            </Principal>
+            <Dependent Role="Siparis">
+              <PropertyRef Name="siparisVeren" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_siparisNo">
+          <End Role="Siparis" Type="Self.Siparis" Multiplicity="1" />
+          <End Role="SiparisIcerigi" Type="Self.SiparisIcerigi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Siparis">
+              <PropertyRef Name="siparisNo" />
+            </Principal>
+            <Dependent Role="SiparisIcerigi">
+              <PropertyRef Name="siparisNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BookStoreEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Adres" EntityType="Self.Adres" />
+          <EntitySet Name="exceptionlog" EntityType="Self.exceptionlog" />
+          <EntitySet Name="Kitap" EntityType="Self.Kitap" />
+          <EntitySet Name="Musteri" EntityType="Self.Musteri" />
+          <EntitySet Name="Siparis" EntityType="Self.Siparis" />
+          <EntitySet Name="SiparisIcerigi" EntityType="Self.SiparisIcerigi" />
+          <EntitySet Name="Yazar" EntityType="Self.Yazar" />
+          <AssociationSet Name="FK_musteriNo" Association="Self.FK_musteriNo">
+            <End Role="Musteri" EntitySet="Musteri" />
+            <End Role="Adres" EntitySet="Adres" />
+          </AssociationSet>
+          <AssociationSet Name="FK_teslimatAdresi" Association="Self.FK_teslimatAdresi">
+            <End Role="Adres" EntitySet="Adres" />
+            <End Role="Siparis" EntitySet="Siparis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_kitapNo" Association="Self.FK_kitapNo">
+            <End Role="Kitap" EntitySet="Kitap" />
+            <End Role="SiparisIcerigi" EntitySet="SiparisIcerigi" />
+          </AssociationSet>
+          <AssociationSet Name="FK_yazarNo" Association="Self.FK_yazarNo">
+            <End Role="Yazar" EntitySet="Yazar" />
+            <End Role="Kitap" EntitySet="Kitap" />
+          </AssociationSet>
+          <AssociationSet Name="FK_siparisVeren" Association="Self.FK_siparisVeren">
+            <End Role="Musteri" EntitySet="Musteri" />
+            <End Role="Siparis" EntitySet="Siparis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_siparisNo" Association="Self.FK_siparisNo">
+            <End Role="Siparis" EntitySet="Siparis" />
+            <End Role="SiparisIcerigi" EntitySet="SiparisIcerigi" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelsStoreContainer" CdmEntityContainer="BookStoreEntities">
+          <EntitySetMapping Name="Adres">
+            <EntityTypeMapping TypeName="Models.Adres">
+              <MappingFragment StoreEntitySet="Adres">
+                <ScalarProperty Name="adresNo" ColumnName="adresNo" />
+                <ScalarProperty Name="musteriNo" ColumnName="musteriNo" />
+                <ScalarProperty Name="il" ColumnName="il" />
+                <ScalarProperty Name="ilce" ColumnName="ilce" />
+                <ScalarProperty Name="sokak" ColumnName="sokak" />
+                <ScalarProperty Name="mahalle" ColumnName="mahalle" />
+                <ScalarProperty Name="no" ColumnName="no" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="exceptionlog">
+            <EntityTypeMapping TypeName="Models.exceptionlog">
+              <MappingFragment StoreEntitySet="exceptionlog">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="timestamp" ColumnName="timestamp" />
+                <ScalarProperty Name="level" ColumnName="level" />
+                <ScalarProperty Name="logger" ColumnName="logger" />
+                <ScalarProperty Name="message" ColumnName="message" />
+                <ScalarProperty Name="userid" ColumnName="userid" />
+                <ScalarProperty Name="exception" ColumnName="exception" />
+                <ScalarProperty Name="stacktrace" ColumnName="stacktrace" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Kitap">
+            <EntityTypeMapping TypeName="Models.Kitap">
+              <MappingFragment StoreEntitySet="Kitap">
+                <ScalarProperty Name="gorselURL" ColumnName="gorselURL" />
+                <ScalarProperty Name="kitapNo" ColumnName="kitapNo" />
+                <ScalarProperty Name="yazarNo" ColumnName="yazarNo" />
+                <ScalarProperty Name="baslik" ColumnName="baslik" />
+                <ScalarProperty Name="sayfaSayisi" ColumnName="sayfaSayisi" />
+                <ScalarProperty Name="basimTarihi" ColumnName="basimTarihi" />
+                <ScalarProperty Name="tur" ColumnName="tur" />
+                <ScalarProperty Name="fiyat" ColumnName="fiyat" />
+                <ScalarProperty Name="stokSayisi" ColumnName="stokSayisi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Musteri">
+            <EntityTypeMapping TypeName="Models.Musteri">
+              <MappingFragment StoreEntitySet="Musteri">
+                <ScalarProperty Name="rol" ColumnName="rol" />
+                <ScalarProperty Name="musteriNo" ColumnName="musteriNo" />
+                <ScalarProperty Name="musteriAd" ColumnName="musteriAd" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="musteriSoyad" ColumnName="musteriSoyad" />
+                <ScalarProperty Name="musteriSifre" ColumnName="musteriSifre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Siparis">
+            <EntityTypeMapping TypeName="Models.Siparis">
+              <MappingFragment StoreEntitySet="Siparis">
+                <ScalarProperty Name="siparisTutari" ColumnName="siparisTutari" />
+                <ScalarProperty Name="siparisNo" ColumnName="siparisNo" />
+                <ScalarProperty Name="siparisVeren" ColumnName="siparisVeren" />
+                <ScalarProperty Name="teslimatAdresi" ColumnName="teslimatAdresi" />
+                <ScalarProperty Name="siparisTarihi" ColumnName="siparisTarihi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SiparisIcerigi">
+            <EntityTypeMapping TypeName="Models.SiparisIcerigi">
+              <MappingFragment StoreEntitySet="SiparisIcerigi">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="siparisNo" ColumnName="siparisNo" />
+                <ScalarProperty Name="kitapNo" ColumnName="kitapNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Yazar">
+            <EntityTypeMapping TypeName="Models.Yazar">
+              <MappingFragment StoreEntitySet="Yazar">
+                <ScalarProperty Name="yazarNo" ColumnName="yazarNo" />
+                <ScalarProperty Name="yazarAdi" ColumnName="yazarAdi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

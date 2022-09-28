@@ -1,0 +1,138 @@
+﻿@model BookstoreWebApi.Models.OrderModel
+@{
+    ViewBag.Title = "Sepetim";
+}
+
+
+
+<h2 class="mt-3 mb-3">Sepetim</h2>
+<hr />
+
+@using (Html.BeginForm("CreateOrder", "Order", FormMethod.Post, new { @id = "SiparisForm" }))
+{
+    if (Model.Kitaplar.Count() != 0)
+    {
+        for (var i = 0; i < Model.Kitaplar.Count(); i++)
+        {
+            for (var j = 0; j < Model.Kitaplar.ElementAt(i).Value; j++)
+            {
+                @Html.Hidden("Kitaplar", Model.Kitaplar.ElementAt(i).Key.KitapNo, new { @id = "Key_KitapNo" })
+            }
+
+        }
+    }
+    <select name="AdresNo" required class="form-select  mb-3 rounded-0 fw-bold" aria-label="">
+        <option value="">Teslimat adresi seçin</option>
+        @{
+            foreach (var adres in Model.Adresler)
+            {
+                <option value="@adres.AdresNo">@adres.Mahalle @adres.Sokak No:@adres.No @adres.Ilce/@adres.Il</option>
+            }
+        }
+    </select>
+
+
+    <table class="table bg-white">
+
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Başlık</th>
+                <th scope="col" class="text-end">Fiyat</th>
+                <th scope="col" class="text-end">Adet</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody class="align-middle">
+            @{
+                if (Model.Kitaplar.Count() == 0)
+                {
+                    <tr class="text-center">
+                        <th colspan="5" class="p-4">@ViewBag.Empty</th>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var item in Model.Kitaplar)
+                    {
+                        <tr id="trbook-@item.Key.KitapNo">
+                            <th scope="row">
+                                <img src="@item.Key.gorselURL" alt="" style="width: 50px;" class="book-card-img m-0">
+                            </th>
+                            <td>@item.Key.Baslik</td>
+                            <td class="text-end"><span id="price-@item.Key.KitapNo">@item.Key.Fiyat</span> TL</td>
+                            <td class="text-end" id="adet-@item.Key.KitapNo">
+                                @item.Value
+                            </td>
+                            <td>
+                                <i class="bi bi-x float-end" onclick="removeFromCart(@item.Key.KitapNo)" style="font-size:32px"></i>
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td colspan="3" class="fw-bold text-end border-0">Toplam: <span id="total">@ViewBag.Total</span> TL</td>
+                        <td class="border-0">
+                            <button type="submit" class="btn btn-sm btn-dark float-end">Sipariş Oluştur</button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}
+@section scripts {
+    <script type="text/javascript">
+        function removeFromCart(id) {
+            $.ajax({
+                url: '/Order/RemoveFromCart/' + id,
+                type: 'GET',
+                contentType: 'application/json',
+                success: function (result) {
+
+                    var count = findCountOfInputs(id);
+
+                    if (count <= 1) { $('#trbook-' + id).hide(); }
+                    else { $('#adet-' + id).text(count - 1); }
+
+                    console.log("Ürün sepetten kaldırıldı");
+
+                    let total = parseFloat($('#total').text().replace(',', '.')).toFixed(2);
+                    let removed = parseFloat($('#price-' + id).text().replace(',', '.')).toFixed(2);
+                    $('#total').text((total - removed).toFixed(2));
+
+                    removeInput(id);
+                },
+                error: function (e) {
+                    alert("Ürün sepetten kaldırılırken hata oluştu");
+                }
+            });
+        };
+        function findCountOfInputs(id) {
+            var inputs = $('[id=Key_KitapNo]')
+            var count = 0;
+            for (var i = 0; i < inputs.length; i++) {
+                var val = inputs.get(i).value;
+                if (val == id) {
+                    count++;
+                }
+            }
+            return count;
+        }
+        function removeInput(id) {
+            var inputs = $('[id=Key_KitapNo]')
+            for (var i = 0; i < inputs.length; i++) {
+                var val = inputs.get(i).value;
+                if (val == id) {
+                    console.log("silindi");
+                    inputs.get(i).remove();
+                    return;
+                }
+            }
+        }
+        $(document).ready(function () {
+            var value = $('[id=Key_KitapNo]').get(2).value;
+            console.log(value);
+        });
+    </script>
+}
+

@@ -1,0 +1,190 @@
+﻿body {
+    padding-bottom: 20px;
+    background: #eee;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+
+.width-100 {
+    width: 100%;
+}
+
+.text-color {
+    color: #eee;
+}
+
+.nav-pills .nav-link.active {
+    color: #fff !important;
+    background: rgb(33, 37, 41) !important;
+}
+
+.nav-pills .nav-link {
+    color: rgb(33, 37, 41);
+}
+
+.form-divide {
+    width: 50% !important;
+    float: left;
+}
+
+
+/* Book Card */
+.book-cards {
+    padding-top: 40px;
+    position: relative;
+}
+
+.book-card {
+    margin-top: 20px;
+    background-color: #fff;
+    box-shadow: -1px 3px 8px -1px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    padding: 20px;
+    color: var(--body-color-light);
+}
+
+.book-card-img {
+    width: 160px;
+    margin-top: -35px;
+    border-radius: 2px;
+    box-shadow: 0px 1px 7px 2px #c7c9d3;
+    border-bottom: 1px solid #dcddde;
+    object-fit: cover;
+    margin-bottom: 20px;
+    transition: 0.3s ease;
+}
+
+    .book-card-img:hover {
+        transform: scale(1.04);
+    }
+
+.card-content {
+    color: var(--body-color);
+    padding: 30px;
+    overflow: hidden;
+    position: relative;
+}
+
+.book-name {
+    font-weight: 500;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.book-by {
+    font-size: 13px;
+    color: var(--body-color-light);
+    margin-top: 4px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.book-rate > label {
+    color: #cccccc;
+}
+
+.rate {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.book-rate > input:checked ~ label,
+.book-rate:not(:checked) > label:hover,
+.book-rate:not(:checked) > label:hover ~ label {
+    color: #ff9700;
+}
+
+    .book-rate > input:checked + label:hover,
+    .book-rate > input:checked ~ label:hover,
+    .book-rate > label:hover ~ input:checked ~ label,
+    .book-rate > input:checked ~ label:hover ~ label {
+        color: #ff9700;
+    }
+
+.card-vote {
+    color: var(--body-color-light);
+}
+
+.card-sum {
+    color: var(--body-color-light);
+    font-size: 13px;
+    line-height: 1.6em;
+    -webkit-line-clamp: 4;
+    margin-top: 15px;
+}
+
+.content-wrapper {
+    display: flex;
+    border-bottom: 1px solid #ebedef;
+    position: relative;
+}
+
+.like-profile {
+    margin-top: 8px;
+}
+
+    .like-profile + .like-profile {
+        margin-left: -5px;
+    }
+
+.like-img {
+    border-radius: 50%;
+    width: 28px;
+    object-fit: cover;
+    border: 2px solid #fff;
+}
+
+.like-name {
+    font-size: 13px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.like-name span {
+    font-weight: 600;
+}
+
+.likes {
+    display: flex;
+    align-items: center;
+}
+
+/* ################ */
+
+/* Login Page */
+
+.login {
+    width: 350px;
+    box-shadow: -1px 3px 8px -1px rgba(0, 0, 0, 0.1);
+    min-height: 350px;
+    margin: 50px auto;
+    background-color: white;
+    padding: 20px;
+}
+
+.login h4 {
+    text-align: center;
+}
+
+i.bi.bi-x:hover {
+    cursor: pointer;
+}
+
+/* ################# */
+
+@media only screen and (min-width:426px) and (max-width: 768px) {
+    .book-card-img {
+        width: 120px !important;
+    }
+}

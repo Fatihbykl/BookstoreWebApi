@@ -1,0 +1,57 @@
+﻿
+@{
+    if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger d-flex align-items-center fw-bold mt-3 m-auto" style="width: 350px; font-size: 15px;" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <div>
+                @ViewBag.Error
+            </div>
+        </div>
+    }
+}
+
+<div class="login">
+    <h4>Üye Ol</h4>
+    <form class="mt-5" asp-controller="User" asp-action="Register" method="post">
+        <div class="mb-3 form-divide">
+            <label for="ad" class="form-label">Ad</label>
+            <input type="text" required class="form-control" id="ad" name="ad">
+        </div>
+        <div class="mb-3 form-divide">
+            <label for="soyad" class="form-label">Soyad</label>
+            <input type="text" required class="form-control" id="soyad" name="soyad">
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" required class="form-control" id="email" name="email">
+        </div>
+        <div class="mb-3">
+            <label for="sifre" class="form-label">Şifre</label>
+            <input type="password" required class="form-control" id="sifre" name="sifre">
+        </div>
+        <hr />
+        <div class="mb-3 form-divide">
+            <label for="il" class="form-label">İl</label>
+            <input type="text" required class="form-control" id="il" name="il">
+        </div>
+        <div class="mb-3 form-divide">
+            <label for="ilce" class="form-label">İlçe</label>
+            <input type="text" required class="form-control" id="ilce" name="ilce">
+        </div>
+        <div class="mb-3">
+            <label for="sokak" class="form-label">Sokak</label>
+            <input type="text" required class="form-control" id="sokak" name="sokak">
+        </div>
+        <div class="mb-3">
+            <label for="mahalle" class="form-label">Mahalle</label>
+            <input type="text" required class="form-control" id="mahalle" name="mahalle">
+        </div>
+        <div class="mb-3">
+            <label for="no" class="form-label">No</label>
+            <input type="number" required min="0" class="form-control" id="no" name="no">
+        </div>
+        <button type="submit" class="btn btn-outline-dark mb-3 float-end">Üye Ol</button>
+    </form>
+</div>
+

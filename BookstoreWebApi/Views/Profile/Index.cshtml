@@ -1,0 +1,76 @@
+﻿@model BookstoreWebApi.Models.MusteriModel
+@{
+    ViewBag.Title = "Index";
+}
+
+
+@{
+    if (ViewBag.Info != null)
+    {
+        <div class="alert alert-success d-flex align-items-center fw-bold mt-3 m-auto" style="font-size: 15px;" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <div>
+                @ViewBag.Info
+            </div>
+        </div>
+    }
+}
+
+<h2>Profil</h2>
+<hr />
+
+<ul class="nav nav-pills nav-justified mb-3" id="pills-tab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Bilgileri Güncelle</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Adres Ekle</button>
+    </li>    
+</ul>
+<div class="tab-content" id="pills-tabContent">
+    <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+        @using (Html.BeginForm("EditProfile", "Profile", FormMethod.Post, new { @class = "mt-5 bg-white p-3 rounded-2" }))
+        {
+            
+            <div class="mb-3">
+                <label for="ad" class="form-label">Ad</label>
+                <input type="text" value="@Model.MusteriAd" required class="form-control" id="ad" name="MusteriAd">
+            </div>
+            <div class="mb-3">
+                <label for="soyad" class="form-label">Soyad</label>
+                <input type="text" value="@Model.MusteriSoyad" required class="form-control" id="soyad" name="MusteriSoyad">
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="text" value="@Model.Email" required class="form-control" id="email" name="Email">
+            </div>
+            <button type="submit" class="btn btn-outline-dark mb-3 float-end">Güncelle</button>
+        }
+    </div>
+    <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+        @using (Html.BeginForm("AddAddress", "Profile", FormMethod.Post, new { @class = "mt-5 bg-white p-3 rounded-2" }))
+        {
+            <div class="mb-3">
+                <label for="il" class="form-label">İl</label>
+                <input type="text" required class="form-control" id="il" name="il">
+            </div>
+            <div class="mb-3">
+                <label for="ilce" class="form-label">İlçe</label>
+                <input type="text" required class="form-control" id="ilce" name="ilce">
+            </div>
+            <div class="mb-3">
+                <label for="sokak" class="form-label">Sokak</label>
+                <input type="text" required class="form-control" id="sokak" name="sokak">
+            </div>
+            <div class="mb-3">
+                <label for="mahalle" class="form-label">Mahalle</label>
+                <input type="text" required class="form-control" id="mahalle" name="mahalle">
+            </div>
+            <div class="mb-3">
+                <label for="no" class="form-label">No</label>
+                <input type="number" required min="0" class="form-control" id="no" name="no">
+            </div>
+            <button type="submit" class="btn btn-outline-dark mb-3 float-end">Ekle</button>
+        }
+    </div>
+</div>

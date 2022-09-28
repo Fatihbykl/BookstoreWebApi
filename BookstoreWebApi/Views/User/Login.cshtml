@@ -1,0 +1,26 @@
+﻿
+@{
+    if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger d-flex align-items-center fw-bold mt-3 m-auto" style="width: 350px; font-size: 15px;" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <div>
+                @ViewBag.Error
+            </div>
+        </div>
+    }
+}
+<div class="login">
+    <h4>Giriş Yap</h4>
+    <form class="mt-5" asp-controller="User" asp-action="Login" method="post">
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" required class="form-control" id="email" name="email">
+        </div>
+        <div class="mb-3">
+            <label for="sifre" class="form-label">Şifre</label>
+            <input type="password" required class="form-control" id="sifre" name="sifre">
+        </div>
+        <button type="submit" class="btn btn-outline-dark float-end">Giriş Yap</button>
+    </form>
+</div>
